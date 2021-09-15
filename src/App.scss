@@ -1,0 +1,17 @@
+.body {
+  margin: 10px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+.form__container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.graph__container {
+  width: 100%;
+}
+.error-message {
+  color: red;
+}
