@@ -7,7 +7,6 @@ import {
   Radio,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import fetchApi from "../../service/fetchApi";
 import {
   fetchApiDataAsync,
   selectData,
@@ -21,19 +20,16 @@ import {
 } from "./formSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import useFetch from "../../service/useFetch";
-
-function Form(props) {
-  const [apiKey, setApiKey] = useState("sdf");
-
-  const formData = useSelector(selectData);
+function Form() {
   const symbol = useSelector(selectSymbol);
   const interval = useSelector(selectInterval);
   const errorMessage = useSelector(selectError);
   const dispatch = useDispatch();
 
   async function submitRequest() {
+    dispatch(reduceError("loading"));
     const apiData = await dispatch(fetchApiDataAsync({ symbol, interval }));
+
     if (!apiData.payload["Meta Data"]) {
       dispatch(reduceError(Object.entries(apiData.payload)[0][1]));
       dispatch(reduceData(undefined));
@@ -71,6 +67,7 @@ function Form(props) {
         variant="contained"
         disabled={!symbol || !interval}
         onClick={submitRequest}
+        data-testid={"submit-button"}
       >
         Submit
       </Button>

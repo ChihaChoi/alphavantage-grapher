@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import fetchApi from "../../service/fetchApi";
 
-const initialState = {
+export const initialState = {
   data: undefined,
   error: "",
   symbol: "",

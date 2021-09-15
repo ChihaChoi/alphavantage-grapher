@@ -1,13 +1,17 @@
 import React from "react";
 import Chart from "react-google-charts";
+import styled from "styled-components";
 
+const InfoStyles = styled.div`
+  border: 2px solid black;
+`;
 function Info(props) {
   let infoDivs = [];
   Object.entries(props.data).forEach((infoBit, infoBitNum) => {
     let infoDiv = (
-      <div key={`infoDiv${infoBitNum}`}>
+      <InfoStyles key={`infoDiv${infoBitNum}`}>
         {infoBit[0]}: {infoBit[1]}
-      </div>
+      </InfoStyles>
     );
 
     infoDivs.push(infoDiv);
@@ -38,6 +42,7 @@ function Graph(props) {
     <div className="graph__container">
       <Info data={Object.entries(props.data)[0][1]} />
       <Chart
+        id="graph"
         width={"100%"}
         height={600}
         chartType="CandlestickChart"
