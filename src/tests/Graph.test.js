@@ -12,6 +12,5 @@ describe("Graph", () => {
   test("renders Graph component and loads test data", () => {
     render(<Graph data={Data} />);
     expect(screen.getByText("2. Symbol: GME")).toBeInTheDocument();
-    expect();
   });
 });

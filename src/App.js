@@ -2,13 +2,16 @@ import "./App.scss";
 import Form from "./components/Form";
 import Graph from "./components/Graph";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectData } from "./components/Form/formSlice";
 
 function App() {
-  const [data, setData] = useState();
+  const formData = useSelector(selectData);
+
   return (
     <div className="body">
-      <Form setData={setData} />
-      {typeof data === "object" ? <Graph data={data} /> : ""}
+      <Form />
+      {typeof formData === "object" ? <Graph data={formData} /> : ""}
     </div>
   );
 }

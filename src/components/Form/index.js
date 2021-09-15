@@ -7,52 +7,49 @@ import {
   Radio,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
+import fetchApi from "../../service/fetchApi";
+import {
+  fetchApiDataAsync,
+  selectData,
+  selectInterval,
+  selectSymbol,
+  selectError,
+  reduceSymbol,
+  reduceInterval,
+  reduceData,
+  reduceError,
+} from "./formSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import useFetch from "../../service/useFetch";
 
 function Form(props) {
   const [apiKey, setApiKey] = useState("sdf");
-  const [symbol, setSymbol] = useState("GME");
-  const [interval, setInterval] = useState("60min");
-  const [apiUrl, setApiUrl] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+
+  const formData = useSelector(selectData);
+  const symbol = useSelector(selectSymbol);
+  const interval = useSelector(selectInterval);
+  const errorMessage = useSelector(selectError);
+  const dispatch = useDispatch();
 
   async function submitRequest() {
-    setApiUrl(
-      `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=${interval}&apikey=${apiKey}`
-    );
-    setErrorMessage("loading");
+    const apiData = await dispatch(fetchApiDataAsync({ symbol, interval }));
+    if (!apiData.payload["Meta Data"]) {
+      dispatch(reduceError(Object.entries(apiData.payload)[0][1]));
+      dispatch(reduceData(undefined));
+    } else {
+      dispatch(reduceError(""));
+      dispatch(reduceData(apiData.payload));
+    }
   }
-  useEffect(async () => {
-    await fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data["Meta Data"]) {
-          setErrorMessage(Object.entries(data)[0][1]);
-        } else {
-          props.setData(data);
-          setErrorMessage("");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, [apiUrl]);
-
   return (
     <div className="form__container">
-      <TextField
-        label="API Key"
-        variant="outlined"
-        defaultValue={apiKey}
-        onChange={(event) => {
-          setApiKey(event.target.value);
-        }}
-      />
       <TextField
         label="Symbol"
         variant="outlined"
         defaultValue={symbol}
         onChange={(event) => {
-          setSymbol(event.target.value);
+          dispatch(reduceSymbol(event.target.value));
         }}
       />
       <FormLabel component="legend">Interval</FormLabel>
@@ -61,7 +58,7 @@ function Form(props) {
         name="interval"
         value={interval}
         onChange={(event) => {
-          setInterval(event.target.value);
+          dispatch(reduceInterval(event.target.value));
         }}
       >
         <FormControlLabel value="1min" control={<Radio />} label="1min" />
@@ -70,7 +67,11 @@ function Form(props) {
         <FormControlLabel value="30min" control={<Radio />} label="30min" />
         <FormControlLabel value="60min" control={<Radio />} label="60min" />
       </RadioGroup>
-      <Button variant="contained" onClick={submitRequest}>
+      <Button
+        variant="contained"
+        disabled={!symbol || !interval}
+        onClick={submitRequest}
+      >
         Submit
       </Button>
       <p className="error-message">{errorMessage}</p>
