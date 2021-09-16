@@ -6,10 +6,8 @@ import {
   FormControlLabel,
   Radio,
 } from "@material-ui/core";
-import { useState, useEffect } from "react";
 import {
   fetchApiDataAsync,
-  selectData,
   selectInterval,
   selectSymbol,
   selectError,

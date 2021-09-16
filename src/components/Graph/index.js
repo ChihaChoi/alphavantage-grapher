@@ -6,20 +6,14 @@ const InfoStyles = styled.div`
   border: 2px solid black;
 `;
 function Info(props) {
-  let infoDivs = [];
-  Object.entries(props.data).forEach((infoBit, infoBitNum) => {
-    let infoDiv = (
-      <InfoStyles key={`infoDiv${infoBitNum}`}>
-        {infoBit[0]}: {infoBit[1]}
-      </InfoStyles>
-    );
-
-    infoDivs.push(infoDiv);
-  });
   return (
     <div>
       <h2>Meta Data</h2>
-      {infoDivs}
+      {Object.entries(props.data).map((infoBit, infoBitNum) => (
+        <InfoStyles key={`infoDiv${infoBitNum}`}>
+          {infoBit[0]}: {infoBit[1]}
+        </InfoStyles>
+      ))}
     </div>
   );
 }
@@ -27,6 +21,20 @@ function Info(props) {
 function Graph(props) {
   const dataAsArray = Object.entries(Object.entries(props.data)[1][1]); //remove the metadata from the json, and turn the object into an array
   let sortedData = [["Time", "a", "b", "c", "d"]];
+  const options = {
+    legend: "none",
+    animation: { startup: true, duration: 700, easing: "out" },
+    candlestick: {
+      fallingColor: {
+        fill: "red",
+        strokeWidth: 0,
+      },
+      risingColor: {
+        fill: "green",
+        strokeWidth: 0,
+      },
+    },
+  };
 
   dataAsArray.forEach((entry) => {
     let arr = [
@@ -42,27 +50,13 @@ function Graph(props) {
     <div className="graph__container">
       <Info data={Object.entries(props.data)[0][1]} />
       <Chart
-        id="graph"
         width={"100%"}
         height={600}
         chartType="CandlestickChart"
         loader={<div>Loading Chart</div>}
         data={sortedData}
-        options={{
-          legend: "none",
-          animation: { startup: true, duration: 700, easing: "out" },
-          candlestick: {
-            fallingColor: {
-              fill: "red",
-              strokeWidth: 0,
-            },
-            risingColor: {
-              fill: "green",
-              strokeWidth: 0,
-            },
-          },
-        }}
-        // rootProps={{ "data-testid": "1" }}
+        options={options}
+        rootProps={{ "data-testid": "1" }}
       />
     </div>
   );

@@ -13,10 +13,7 @@ export const fetchApiDataAsync = createAsyncThunk(
   "form/fetchData",
   async (params) => {
     let url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${params.symbol}&interval=${params.interval}&apikey=adasdsdfgdf`;
-
     const response = await fetchApi(url);
-
-    // formSlice.actions.reduceData(response);
     return response;
   }
 );
@@ -36,13 +33,6 @@ export const formSlice = createSlice({
     },
     reduceError: (state, action) => {
       state.error = action.payload;
-    },
-    extraReducers: (builder) => {
-      // Add reducers for additional action types here, and handle loading state as needed
-      builder.addCase(fetchData.fulfilled, (state, action) => {
-        // Add user to the state array
-        state.data = action.payload;
-      });
     },
   },
 });
