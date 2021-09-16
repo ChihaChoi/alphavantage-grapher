@@ -48,6 +48,7 @@ function Form() {
       />
       <FormLabel component="legend">Interval</FormLabel>
       <RadioGroup
+        row
         aria-label="gender"
         name="interval"
         value={interval}

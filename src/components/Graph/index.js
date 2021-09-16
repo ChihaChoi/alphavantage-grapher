@@ -2,17 +2,23 @@ import React from "react";
 import Chart from "react-google-charts";
 import styled from "styled-components";
 
+const InfoStylesContainer = styled.div`
+  display: flex;
+`;
+
 const InfoStyles = styled.div`
-  border: 2px solid black;
+  margin: 5px;
+  width: 200px;
 `;
 function Info(props) {
   return (
     <div>
       <h2>Meta Data</h2>
       {Object.entries(props.data).map((infoBit, infoBitNum) => (
-        <InfoStyles key={`infoDiv${infoBitNum}`}>
-          {infoBit[0]}: {infoBit[1]}
-        </InfoStyles>
+        <InfoStylesContainer key={`infoDiv${infoBitNum}`}>
+          <InfoStyles>{infoBit[0]}</InfoStyles>
+          <InfoStyles>{infoBit[1]}</InfoStyles>
+        </InfoStylesContainer>
       ))}
     </div>
   );

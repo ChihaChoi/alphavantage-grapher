@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./styles/App.scss";
 import Form from "./components/Form";
 import Graph from "./components/Graph";
 import { useSelector } from "react-redux";
