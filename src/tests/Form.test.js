@@ -5,8 +5,6 @@ import { createStore } from "redux";
 import { initialState } from "../components/Form/formSlice";
 import Form from "../components/Form";
 
-import fetchApi from "../service/fetchApi";
-
 const initialStateTest = {
   form: initialState,
 };
@@ -21,11 +19,5 @@ describe("Form", () => {
       </Provider>
     );
     expect(screen.getByTestId("submit-button").disabled).toBeTruthy();
-  });
-  test("tests", async () => {
-    const url =
-      "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=GME&interval=60min&apikey=GKZ3Y2D5GRR8IJWF";
-    const data = await fetchApi(url);
-    expect(data["Meta Data"]).toBeTruthy();
   });
 });
